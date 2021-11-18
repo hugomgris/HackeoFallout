@@ -5,8 +5,8 @@ using UnityEngine;
 public class PuzzleManager : MonoBehaviour
 {
     public Puzzle currentPuzzle;
-    int solutionIndex;
     GameController controller;
+    string correctWord;
 
     private void Awake()
     {
@@ -15,8 +15,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void Start()
     {
-        solutionIndex = GetRandomWordFromPuzzleList();
-        Debug.Log(currentPuzzle.puzzleWords[solutionIndex]);
+        correctWord = currentPuzzle.puzzleWords[GetRandomWordFromPuzzleList()];
     }
 
 
@@ -27,14 +26,27 @@ public class PuzzleManager : MonoBehaviour
 
     public void AttemptToSolvePuzzle(GameController controller, string userInput)
     {
-        if (userInput == currentPuzzle.puzzleWords[solutionIndex])
+        int correctLetters=0;
+        if (userInput == correctWord)
         {
-            controller.LogStringWithReturn($"You won! The correct word was {currentPuzzle.puzzleWords[solutionIndex]}");
+            controller.LogStringWithReturn($"You won! The correct word was {correctWord}");
         }
         else
         {
-            controller.LogStringWithReturn("Nope, that was not the correct word. Try again :)");
-            controller.DisplayPuzzleWords();
+            if (userInput.Length == correctWord.Length)
+            {
+                for (int i = 0; i < userInput.Length; i++)
+                {
+                    if (userInput[i] == correctWord[i])
+                    {
+                        correctLetters++;
+                    }
+                }
+                controller.LogStringWithReturn($"Nope, that was not the correct word. You got {correctLetters} letters correct");
+                controller.DisplayPuzzleWords();
+            }
+            else
+                controller.LogStringWithReturn("Please enter a valid word");
         }
     }
 }
