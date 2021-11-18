@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    //cambiocommit
     [HideInInspector] public List<string> actionLog = new List<string>();
     [HideInInspector] public PuzzleManager puzzleManager;
     public Text displayText;
